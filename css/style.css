@@ -1,0 +1,110 @@
+body{
+  width:auto;
+  height: 100%;
+  font-size:18px;
+}
+.row{
+  padding: 0!important;
+  margin: 0!important;
+}
+.title{
+  width:100% !important;
+  height:45px!important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight:bold;
+  padding:5px 0;
+}
+.num{
+  text-align: right;
+  padding: 0 5px;
+  height:45px!important;
+  font-weight:bold;
+}
+.marco{
+  width:100% !important;
+  text-align: left;
+  padding: 0 5px;
+  height:45px!important;
+  background-color:#e9ecef;
+  border: 2px solid #ced4da;
+  color:white;
+  
+}
+.marco_execute{
+  width:100% !important;
+  text-align: left;
+  padding: 0 5px;
+  height:45px!important;
+  background-color:#d1e7dd;
+  border: 2px solid #75b798;
+  color:#146c43;
+}
+
+#execute{
+  width:100% !important;
+  text-align: left;
+  height:135px!important;
+  background-color:#d1e7dd;
+  border: 2px solid #75b798;
+  overflow-y: auto;
+}
+#execute .item{
+  width:100% !important;
+  height:45px!important;
+  text-align: left;
+  padding: 0 5px;
+  display: flex;
+  align-items:center;
+  background-color:#d1e7dd;
+  border-bottom: 2px solid #75b798;
+  color:#146c43;
+}
+#execute .item:last-child{
+  border:none;
+}
+#wait{
+  width:100% !important;
+  text-align: left;
+  height:135px!important;
+  background-color:#fff3cd;
+  border: 2px solid #ffda6a;
+  overflow-y: auto;
+}
+#wait .item{
+  width:100% !important;
+  height:45px!important;
+  text-align: left;
+  padding: 0 5px;
+  display: flex;
+  align-items:center;
+  background-color:#fff3cd;
+  border-bottom: 2px solid #ffda6a;
+  color:#cc9a06;
+}
+#wait .item:last-child{
+  border:none;
+}
+#finish{
+  width:100% !important;
+  text-align: left;
+  height:180px!important;
+  background-color:#f8d7da;
+  border: 2px solid #ea868f;
+  overflow-y: auto;
+}
+#finish .item{
+  width:100% !important;
+  height:45px!important;
+  text-align: left;
+  padding: 0 5px;
+  display: flex;
+  align-items:center;
+  background-color:#f8d7da;
+  border-bottom: 2px solid #ea868f;
+  color:#b02a37;
+}
+#finish .item:last-child{
+  border:none;
+}
