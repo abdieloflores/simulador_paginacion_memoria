@@ -3,10 +3,43 @@ body{
   height: 100%;
   font-size:18px;
 }
+/* Scroll bar*/
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: none;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(136, 136, 136, 0.2);
+  border-radius:5px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(85, 85, 85, 0.5);
+}
+/* End scroll bar*/
 .row{
   padding: 0!important;
   margin: 0!important;
 }
+.info{
+  width:100% !important;
+  text-align: left;
+  height:180px!important;
+  background-color:#e9ecef;
+  border: 2px solid #ced4da;
+  overflow: auto;
+  padding:10px;
+}
+.info h3{
+  text-align:center;
+  font-size: 18px;
+  font-weight: bold;
+}
+.info p{
+  font-size: 15px;
+}
+
 .button{
   display:flex;
   align-items: center;
@@ -43,7 +76,7 @@ body{
   background-color:#e9ecef;
   border: 2px solid #ced4da;
   color:white;
-  
+  transition: all .3s ease;
 }
 .frame_execute{
   width:100% !important;
