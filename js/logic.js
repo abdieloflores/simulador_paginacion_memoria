@@ -1,9 +1,11 @@
+let count = 0;
+
 class Page {
   constructor(process, index) {
     this.process = process;
     this.index = index;
-    this.memory = 0;
-    this.position = 0;
+    this.memory = null;
+    this.position = null;
   }
   //Getters
   get getProcess() {
@@ -34,15 +36,11 @@ class Page {
 }
 
 class Process {
-  constructor(
-    id = "P_" + Math.random().toString(36).substr(2, 9),
-    pageSize = 512,
-    size = Math.random() * 4096
-  ) {
-    this.id = id;
+  constructor(pageSize = 512,size = Math.random() * 4096) {
+    this.id = "Proceso_"+count++;
     this.pageSize = pageSize;
     this.size = size;
-    this.status = 1;
+    this.status = 0;
     this.pages = Math.ceil(this.size / this.pageSize);
     this.tablePages = [];
     this.buildTablePages();
@@ -199,8 +197,7 @@ class Memory {
         break;
     }
   }
-
-  checkAvailablePages(pages) {
+  refresAvailablePages(){
     this.framesRamAvailable = [];
     this.framesVirtualAvailable = [];
     this.framesRamTotal.forEach((frame) => {
@@ -213,7 +210,10 @@ class Memory {
         this.framesVirtualAvailable.push(frame.position);
       }
     });
+  }
 
+  checkAvailablePages(pages) {
+    this.refresAvailablePages();
     if (pages <= this.framesRamAvailable.length) {
       return 1;
     } else if (pages <= this.framesRamAvailable.length + this.framesVirtualAvailable.length) {
@@ -224,23 +224,34 @@ class Memory {
   }
 
   addExecute(process, type) {
-    //Load in execute process.
-    this.executeProcesses.push(process);
+    
     //Load in frames ram and virtual
     switch (type) {
       case 1:
+        this.refresAvailablePages();
         for (let i = 0; i < process.getPages; i++) {
           this.framesRamTotal[this.framesRamAvailable[i]].page = process.getId;
           process.getTablePages[i].setPosition = this.framesRamAvailable[i];
           process.getTablePages[i].setMemory = 0;
         }
 
-        process.getTablePages.forEach((page, index) => {
-          document.querySelector(`#marcoRam${page.getPosition}`).className ="marco_execute";
-          document.querySelector(`#marcoRam${page.getPosition}`).innerHTML = `${index} - ${process.getId}`;
-        });
+        if(process.getStatus===2){
+          process.getTablePages.forEach((page, index) => {
+            document.querySelector(`#frameRam${page.getPosition}`).className ="frame_wait";
+            document.querySelector(`#frameRam${page.getPosition}`).innerHTML = `${index} - ${process.getId}`;
+          });
+        }else{
+          process.getTablePages.forEach((page, index) => {
+            document.querySelector(`#frameRam${page.getPosition}`).className ="frame_execute";
+            document.querySelector(`#frameRam${page.getPosition}`).innerHTML = `${index} - ${process.getId}`;
+          });
+        }
+        setTimeout(()=>{
+          this.deleteExecute(process);
+        },Math.round(Math.random() * (10000 - 3000) + 3000));
         break;
       case 2:
+        this.refresAvailablePages();
         for (let i = 0; i < this.framesRamAvailable.length; i++) {
           this.framesRamTotal[this.framesRamAvailable[i]].page = process.getId;
           process.getTablePages[i].setPosition = this.framesRamAvailable[i];
@@ -252,16 +263,36 @@ class Memory {
           process.getTablePages[i].setPosition = this.framesVirtualAvailable[i-this.framesRamAvailable.length];
           process.getTablePages[i].setMemory = 1;
         }
-        process.getTablePages.forEach((page, index) => {
-          if(page.getMemory===0){
-            document.querySelector(`#marcoRam${page.getPosition}`).className ="marco_execute";
-            document.querySelector(`#marcoRam${page.getPosition}`).innerHTML = `${index} - ${process.getId}`;
-          }else{
-            document.querySelector(`#marcoVirtual${page.getPosition}`).className ="marco_execute";
-            document.querySelector(`#marcoVirtual${page.getPosition}`).innerHTML = `${index} - ${process.getId}`;
-          }
-        });
 
+        if(process.getStatus===2)
+        {
+          process.getTablePages.forEach((page, index) => {
+            if(page.getMemory===0){
+              document.querySelector(`#frameRam${page.getPosition}`).className ="frame_wait";
+              document.querySelector(`#frameRam${page.getPosition}`).innerHTML = `${index} - ${process.getId}`;
+            }else{
+              document.querySelector(`#frameVirtual${page.getPosition}`).className ="frame_wait";
+              document.querySelector(`#frameVirtual${page.getPosition}`).innerHTML = `${index} - ${process.getId}`;
+            }
+          })
+        }else{
+          process.setStatus=1;
+          process.getTablePages.forEach((page, index) => {
+            if(page.getMemory===0){
+              document.querySelector(`#frameRam${page.getPosition}`).className ="frame_execute";
+              document.querySelector(`#frameRam${page.getPosition}`).innerHTML = `${index} - ${process.getId}`;
+            }else{
+              document.querySelector(`#frameVirtual${page.getPosition}`).className ="frame_execute";
+              document.querySelector(`#frameVirtual${page.getPosition}`).innerHTML = `${index} - ${process.getId}`;
+            }
+          })
+        };
+        //Load in execute process.
+        this.executeProcesses.push(process);
+        //Timeout from finish process
+        setTimeout(()=>{
+          this.deleteExecute(process);
+        },Math.round(Math.random() * (10000 - 3000) + 3000));
         break;
       default:
         break;
@@ -275,48 +306,109 @@ class Memory {
     element.focus();
     element.appendChild(text);
     executeFrame.appendChild(element);
+    this.refresAvailablePages();
+  }
+  
+  deleteExecute(process){
+    // Delete process from this.executeProcess
+    let pos;
+    this.executeProcesses.forEach((item,index)=>{
+      if(item.id===process.getId){
+        pos = index;
+        return;
+      }
+    });
+    
+    this.executeProcesses.splice(pos,1);
+    process.setStatus=0;
+
+    // Delete process from this.framesRamTotal and this.framesVirtualTotal
+    process.getTablePages.forEach((page)=>{
+      if(page.getMemory===0){
+        this.framesRamTotal[page.getPosition].page=null;
+      }else{
+        this.framesVirtualTotal[page.getPosition].page=null;
+      }
+    });
+    this.refresAvailablePages();
+    // Delete process from view
+    document.querySelector(`#${process.getId}`).remove();
+    process.getTablePages.forEach((page) => {
+        if(page.getMemory===0){
+          document.querySelector(`#frameRam${page.getPosition}`).className ="frame";
+          document.querySelector(`#frameRam${page.getPosition}`).innerHTML = "";
+          page.setMemory=null;
+        }else{
+          document.querySelector(`#frameVirtual${page.getPosition}`).className ="frame";
+          document.querySelector(`#frameVirtual${page.getPosition}`).innerHTML = "";
+          page.setMemory=null;
+        }
+    });
+
+    this.addFinish(process);
+    this.waitToExecute();
   }
 
   addWait(process) {
     //Change status of process
     process.setStatus=2;
-    console.log(process);
     //Load in execute process.
     this.waitProcesses.push(process);
     //Load in execute frame.
-    const executeFrame = document.querySelector("#wait");
+    const waitFrame = document.querySelector("#wait");
     let element = document.createElement("div");
     let text = document.createTextNode(`${process.id}`);
     element.id = process.id;
     element.className = "item";
     element.focus();
     element.appendChild(text);
-    executeFrame.appendChild(element);
+    waitFrame.appendChild(element);
+  }
+  deleteWait(process){
+    //Delete from frame wait
+    document.querySelector(`#${process.getId}`).remove();
+    this.loadProcess(process);
+  }
+  waitToExecute(){
+    if(this.waitProcesses.length>0){
+      let amount = this.waitProcesses.length;
+      for(let i=0;i<amount;i++ ){
+        this.deleteWait(this.waitProcesses[i]);
+      };
+      // Delete process from this.waitProcess
+      for(let i=0;i<amount;i++ ){
+        this.waitProcesses.splice(i,1);
+      };
+    }
   }
 
   addFinish(process) {
     //Change status of process
     process.setStatus=0;
-    console.log(process);
     //Load in execute process.
-    this.waitProcesses.push(process);
+    this.finishProcesses.push(process);
     //Load in execute frame.
-    const executeFrame = document.querySelector("#finish");
+    const finishFrame = document.querySelector("#finish");
     let element = document.createElement("div");
     let text = document.createTextNode(`${process.id}`);
     element.id = process.id;
     element.className = "item";
     element.focus();
     element.appendChild(text);
-    executeFrame.appendChild(element);
+    finishFrame.appendChild(element);
   }
 }
 
 const memory = new Memory(6144, 6144);
+let interval;
 
-// setInterval(()=>{
-//   memory.createProcess();
-// },5000);
+const init=()=>{
+  memory.createProcess();
+  interval = setInterval(()=>{
+    memory.createProcess();
+  },Math.round(Math.random() * (2000 - 1000) + 1000));
+}
 
-
-
+const finish=()=>{
+  clearInterval(interval);
+}
