@@ -249,6 +249,7 @@ class Memory {
         setTimeout(()=>{
           this.deleteExecute(process);
         },Math.round(Math.random() * (10000 - 3000) + 3000));
+        this.refresAvailablePages();
         break;
       case 2:
         this.refresAvailablePages();
@@ -293,6 +294,7 @@ class Memory {
         setTimeout(()=>{
           this.deleteExecute(process);
         },Math.round(Math.random() * (10000 - 3000) + 3000));
+        this.refresAvailablePages();
         break;
       default:
         break;
@@ -337,11 +339,9 @@ class Memory {
         if(page.getMemory===0){
           document.querySelector(`#frameRam${page.getPosition}`).className ="frame";
           document.querySelector(`#frameRam${page.getPosition}`).innerHTML = "";
-          page.setMemory=null;
         }else{
           document.querySelector(`#frameVirtual${page.getPosition}`).className ="frame";
           document.querySelector(`#frameVirtual${page.getPosition}`).innerHTML = "";
-          page.setMemory=null;
         }
     });
 
