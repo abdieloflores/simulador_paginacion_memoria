@@ -31,14 +31,14 @@ body{
 }
 .num{
   text-align: right;
-  padding: 0 5px;
+  padding: 0 10px;
   height:45px!important;
   font-weight:bold;
 }
 .frame{
   width:100% !important;
   text-align: left;
-  padding: 0 5px;
+  padding: 0 10px;
   height:45px!important;
   background-color:#e9ecef;
   border: 2px solid #ced4da;
@@ -48,7 +48,7 @@ body{
 .frame_execute{
   width:100% !important;
   text-align: left;
-  padding: 0 5px;
+  padding: 0 10px;
   height:45px!important;
   background-color:#d1e7dd;
   border: 2px solid #75b798;
@@ -57,7 +57,7 @@ body{
 .frame_wait{
   width:100% !important;
   text-align: left;
-  padding: 0 5px;
+  padding: 0 10px;
   height:45px!important;
   background-color:#fff3cd;
   border: 2px solid #ffda6a;
@@ -76,7 +76,7 @@ body{
   width:100% !important;
   height:45px!important;
   text-align: left;
-  padding: 0 5px;
+  padding: 0 10px;
   display: flex;
   align-items:center;
   background-color:#d1e7dd;
@@ -98,7 +98,7 @@ body{
   width:100% !important;
   height:45px!important;
   text-align: left;
-  padding: 0 5px;
+  padding: 0 10px;
   display: flex;
   align-items:center;
   background-color:#fff3cd;
@@ -120,7 +120,7 @@ body{
   width:100% !important;
   height:45px!important;
   text-align: left;
-  padding: 0 5px;
+  padding: 0 10px;
   display: flex;
   align-items:center;
   background-color:#f8d7da;

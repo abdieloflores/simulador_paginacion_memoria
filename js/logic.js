@@ -301,14 +301,12 @@ class Memory {
     }
     //Load in execute frame.
     const executeFrame = document.querySelector("#execute");
-    let element = document.createElement("div");
+    let div = document.createElement("div");
     let text = document.createTextNode(`${process.id}`);
-    element.id = process.id;
-    element.className = "item";
-    element.focus();
-    element.appendChild(text);
-    executeFrame.appendChild(element);
-    this.refresAvailablePages();
+    div.id = process.id;
+    div.className = "item fw-bold";
+    div.appendChild(text);
+    executeFrame.appendChild(div);
   }
   
   deleteExecute(process){
@@ -320,7 +318,6 @@ class Memory {
         return;
       }
     });
-    
     this.executeProcesses.splice(pos,1);
     process.setStatus=0;
 
@@ -356,30 +353,26 @@ class Memory {
     this.waitProcesses.push(process);
     //Load in execute frame.
     const waitFrame = document.querySelector("#wait");
-    let element = document.createElement("div");
+    let div = document.createElement("div");
     let text = document.createTextNode(`${process.id}`);
-    element.id = process.id;
-    element.className = "item";
-    element.focus();
-    element.appendChild(text);
-    waitFrame.appendChild(element);
+    div.id = process.id;
+    div.className = "item fw-bold";
+    div.appendChild(text);
+    waitFrame.appendChild(div);
+  }
+  waitToExecute(){
+    if(this.waitProcesses.length>0){
+      let waitProcessesCopy = this.waitProcesses.slice();
+      this.waitProcesses.length=0;
+      waitProcessesCopy.forEach((waitProcess)=>{
+        this.deleteWait(waitProcess);
+      });
+    }
   }
   deleteWait(process){
     //Delete from frame wait
     document.querySelector(`#${process.getId}`).remove();
     this.loadProcess(process);
-  }
-  waitToExecute(){
-    if(this.waitProcesses.length>0){
-      let amount = this.waitProcesses.length;
-      for(let i=0;i<amount;i++ ){
-        this.deleteWait(this.waitProcesses[i]);
-      };
-      // Delete process from this.waitProcess
-      for(let i=0;i<amount;i++ ){
-        this.waitProcesses.splice(i,1);
-      };
-    }
   }
 
   addFinish(process) {
@@ -389,13 +382,12 @@ class Memory {
     this.finishProcesses.push(process);
     //Load in execute frame.
     const finishFrame = document.querySelector("#finish");
-    let element = document.createElement("div");
+    let div = document.createElement("div");
     let text = document.createTextNode(`${process.id}`);
-    element.id = process.id;
-    element.className = "item";
-    element.focus();
-    element.appendChild(text);
-    finishFrame.appendChild(element);
+    div.id = process.id;
+    div.className = "item fw-bold";
+    div.appendChild(text);
+    finishFrame.appendChild(div);
   }
 }
 
