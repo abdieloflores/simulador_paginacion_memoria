@@ -159,7 +159,30 @@ body{
   background-color:#f8d7da;
   border-bottom: 2px solid #ea868f;
   color:#b02a37;
+  cursor: pointer;
+}
+#finish .item:hover{
+  background-color:#b02a37;
+  border-bottom: 2px solid #b02a37;
+  color: white;
 }
 #finish .item:last-child{
   border:none;
+}
+.modal-body{
+  display: flex;
+  align-items: center;
+  justify-content:center;
+}
+.info-modal{
+  display: inline-block;
+}
+.info-modal h3{
+  text-align:center;
+  font-weight: bold;
+  color:#0d6efd;
+}
+.info-modal span{
+  font-weight: bold;
+  color:#0d6efd;
 }
