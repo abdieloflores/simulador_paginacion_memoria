@@ -2,6 +2,7 @@ body{
   width:auto;
   height: 100%;
   font-size:18px;
+  color: rgb(63, 63, 63);
 }
 /* Scroll bar*/
 ::-webkit-scrollbar {
@@ -24,7 +25,7 @@ body{
 }
 .info{
   width:100% !important;
-  text-align: left;
+  text-align: center;
   height:180px!important;
   background-color:#e9ecef;
   border: 2px solid #ced4da;
@@ -33,8 +34,10 @@ body{
 }
 .info h3{
   text-align:center;
-  font-size: 18px;
+  font-size: 25px;
   font-weight: bold;
+  color:#0d6efd;
+  margin-bottom: 20px;
 }
 .info p{
   font-size: 15px;
@@ -64,7 +67,7 @@ body{
 }
 .num{
   text-align: right;
-  padding: 0 10px;
+  padding-right: 5px;
   height:45px!important;
   font-weight:bold;
 }
