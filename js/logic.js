@@ -387,11 +387,11 @@ class Memory {
     div.setAttribute("data-bs-toggle","modal");
     div.setAttribute("data-bs-target","#modalFinish");
     let infoTable;
-    infoTable =`<div class="info-modal"><h3><strong>${process.getId}</strong></h3></br>`
+    infoTable =`<div class="info-modal"><h3>${process.getId}</h3><table><tr><th>INDEX</th><th>MEMORY</th><th>POSITION</th></tr>`
     process.getTablePages.forEach((page)=>{
-      infoTable += `<span>Index:</span> ${page.getIndex} <span>Memory:</span> ${page.getMemory===0?"RAM":"VIRTUAL"} <span>Position:</span> ${page.getPosition} </br>`;
+      infoTable += `<tr><td>${page.getIndex}</td><td>${page.getMemory===0?"RAM":"VIRTUAL"}</td><td>${page.getPosition}</td></tr>`;
     });
-    infoTable +='</div>';
+    infoTable +=`<table/></div>`;
     div.setAttribute("data-body",infoTable);
     div.addEventListener("click",this.loadModal,false);
     div.id = process.id;
@@ -401,7 +401,6 @@ class Memory {
   }
   loadModal(){
     document.querySelector('.modal-body').innerHTML=this.dataset.body;
-    // document.querySelector('.modal-body').innerHTML
   }
 }
 
