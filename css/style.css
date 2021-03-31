@@ -41,7 +41,6 @@ body{
 .info p{
   font-size: 15px;
 }
-
 .button{
   display:flex;
   align-items: center;
@@ -54,7 +53,6 @@ body{
   border-radius: none!important;
   cursor:pointer;
 }
-
 .title{
   width:100% !important;
   height:45px!important;
@@ -98,7 +96,6 @@ body{
   border: 2px solid #ffda6a;
   color:#cc9a06;
 }
-
 #execute{
   width:100% !important;
   text-align: left;
@@ -118,9 +115,6 @@ body{
   border-bottom: 2px solid #75b798;
   color:#146c43;
 }
-#execute .item:last-child{
-  border:none;
-}
 #wait{
   width:100% !important;
   text-align: left;
@@ -139,9 +133,6 @@ body{
   background-color:#fff3cd;
   border-bottom: 2px solid #ffda6a;
   color:#cc9a06;
-}
-#wait .item:last-child{
-  border:none;
 }
 #finish{
   width:100% !important;
