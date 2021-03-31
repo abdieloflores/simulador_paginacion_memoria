@@ -37,7 +37,7 @@ class Page {
 
 class Process {
   constructor(pageSize = 512,size = Math.random() * 4096) {
-    this.id = "Proceso_"+count++;
+    this.id = "Proceso-"+count++;
     this.pageSize = pageSize;
     this.size = size;
     this.status = 0;
@@ -135,6 +135,15 @@ class Memory {
   get getFramesVirtualAvailable() {
     return this.framesVirtualAvailable;
   }
+  get getExecuteProcesses(){
+    return this.executeProcesses;
+  }
+  get getWaitProcesses(){
+    return this.waitProcesses;
+  }
+  get getFinishProcesses(){
+    return this.finishProcesses;
+  }
 
   //Setters
   set setRamSize(ramSize) {
@@ -160,6 +169,15 @@ class Memory {
   }
   set setFramesVirtualAvailable(framesVirtualAvailable) {
     this.framesVirtualAvailable = framesVirtualAvailable;
+  }
+  set setExecuteProcesses(executeProcesses){
+    this.executeProcesses = executeProcesses;
+  }
+  set setWaitProcesses(waitProcesses){
+    this.waitProcesses = waitProcesses;
+  }
+  set setFinishProcesses(finishProcesses){
+    this.finishProcesses = finishProcesses;
   }
 
   //Methods
@@ -197,6 +215,7 @@ class Memory {
         break;
     }
   }
+
   refresAvailablePages(){
     this.framesRamAvailable = [];
     this.framesVirtualAvailable = [];
@@ -360,6 +379,7 @@ class Memory {
     div.appendChild(text);
     waitFrame.appendChild(div);
   }
+
   waitToExecute(){
     if(this.waitProcesses.length>0){
       let waitProcessesCopy = this.waitProcesses.slice();
@@ -369,6 +389,7 @@ class Memory {
       });
     }
   }
+
   deleteWait(process){
     //Delete from frame wait
     document.querySelector(`#${process.getId}`).remove();
@@ -378,29 +399,50 @@ class Memory {
   addFinish(process) {
     //Change status of process
     process.setStatus=0;
-    //Load in execute process.
+    //Load in finish processes
     this.finishProcesses.push(process);
-    //Load in execute frame.
+    //Load in finish frame.
     const finishFrame = document.querySelector("#finish");
+    //Create div
     let div = document.createElement("div");
     let text = document.createTextNode(`${process.id}`);
-    div.setAttribute("data-bs-toggle","modal");
-    div.setAttribute("data-bs-target","#modalFinish");
-    let infoTable;
-    infoTable =`<div class="info-modal"><h3>${process.getId}</h3><table><tr><th>INDEX</th><th>MEMORY</th><th>POSITION</th></tr>`
-    process.getTablePages.forEach((page)=>{
-      infoTable += `<tr><td>${page.getIndex}</td><td>${page.getMemory===0?"RAM":"VIRTUAL"}</td><td>${page.getPosition}</td></tr>`;
-    });
-    infoTable +=`<table/></div>`;
-    div.setAttribute("data-body",infoTable);
-    div.addEventListener("click",this.loadModal,false);
     div.id = process.id;
     div.className = "item fw-bold";
+    div.setAttribute("data-bs-toggle","modal");
+    div.setAttribute("data-bs-target","#modalFinish");
+    div.addEventListener("click",()=>(this.loadModal(process)),false);
     div.appendChild(text);
     finishFrame.appendChild(div);
   }
-  loadModal(){
-    document.querySelector('.modal-body').innerHTML=this.dataset.body;
+
+  loadModal(process){
+    let infoTable;
+    infoTable =`
+    <div class="pt-2 text-center">
+      <button type="button" class="btn-close float-end" data-bs-dismiss="modal" aria-label="Close"></button>
+      <h3 class="text-dark text-uppercase fw-bold">${process.getId}</h3>
+      <table class="table table-striped">
+        <thead class="table-dark">
+          <tr>
+            <th scope="col">INDEX</th>
+            <th scope="col">MEMORY</th>
+            <th scope="col">POSITION</th>
+          </tr>
+        </thead>
+        <tbody>`
+    process.getTablePages.forEach((page)=>{
+      infoTable += `
+          <tr>
+            <th scope="row">${page.getIndex}</th>
+            <td>${page.getMemory===0?"RAM":"VIRTUAL"}</td>
+            <td>${page.getPosition}</td>
+          </tr>`;
+    });
+    infoTable +=` 
+        </tbody>
+      <table/>
+    </div>`;
+    document.querySelector('.modal-body').innerHTML=infoTable;
   }
 }
 
